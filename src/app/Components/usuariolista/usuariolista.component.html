@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let user of usuario">
+      <div class="card mb-3 shadow">
+        <!-- Imagen en la parte superior de la card -->
+        <img
+          [src]="
+            user.imagenUrl ||
+            'https://cdn-icons-png.flaticon.com/512/6833/6833559.png'
+          "
+          class="card-img-top"
+          alt="Imagen de {{ user.nombre }}"
+        />
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ user.nombre }} {{ user.apPaterno }} {{ user.apMaterno }}
+          </h5>
+          <p class="card-text">
+            <strong>Email:</strong> {{ user.email }}<br />
+            <strong>Teléfono:</strong> {{ user.telefono }}<br />
+            <strong>Calificación:</strong>
+          </p>
+
+          <div>
+            <ng-container *ngFor="let star of getStars(user.calificacionprom)">
+              &#9733;
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

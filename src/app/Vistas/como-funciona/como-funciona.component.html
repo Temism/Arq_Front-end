@@ -1,0 +1,105 @@
+<header>
+  <app-toolbar></app-toolbar>
+</header>
+
+<div class="body">
+  <div class="container py-5">
+    <h1 class="text-center mb-5">¿Cómo Funciona Fix Finder?</h1>
+
+    <div class="row g-4">
+      <!-- Paso 1 -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <div class="mb-4">
+              <i class="bi bi-search text-primary" style="font-size: 3rem"></i>
+            </div>
+            <h3 class="card-title h4">Busca</h3>
+            <p class="card-text">
+              Encuentra especialistas calificados según tus necesidades
+              específicas.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <div class="mb-4">
+              <i
+                class="bi bi-calendar-check text-primary"
+                style="font-size: 3rem"
+              ></i>
+            </div>
+            <h3 class="card-title h4">Agenda</h3>
+            <p class="card-text">
+              Coordina una cita con el profesional que mejor se ajuste a tus
+              necesidades.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center">
+            <div class="mb-4">
+              <i class="bi bi-star text-primary" style="font-size: 3rem"></i>
+            </div>
+            <h3 class="card-title h4">Califica</h3>
+            <p class="card-text">
+              Comparte tu experiencia y ayuda a otros usuarios a encontrar
+              buenos profesionales.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Características adicionales -->
+    <div class="row mt-5 g-4">
+      <div class="col-md-6">
+        <div class="d-flex align-items-start">
+          <i
+            class="bi bi-shield-check text-primary me-3"
+            style="font-size: 2rem"
+          ></i>
+          <div>
+            <h4>Profesionales Verificados</h4>
+            <p>
+              Todos nuestros especialistas pasan por un proceso de verificación.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="d-flex align-items-start">
+          <i
+            class="bi bi-clock-history text-primary me-3"
+            style="font-size: 2rem"
+          ></i>
+          <div>
+            <h4>Respuesta Rápida</h4>
+            <p>
+              Encuentra ayuda cuando la necesites, con respuesta en minutos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-5">
+      <button [routerLink]="['/login']" class="btn btn-primary btn-lg">
+        Comenzar Ahora
+      </button>
+    </div>
+  </div>
+</div>
+<footer>
+  <app-footer></app-footer>
+</footer>

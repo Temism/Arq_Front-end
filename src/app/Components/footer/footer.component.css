@@ -1,0 +1,14 @@
+.footer {
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: auto;
+}
+.social-links a:hover {
+  color: var(--bs-primary) !important;
+}
+.list-unstyled a:hover {
+  color: var(--bs-primary) !important;
+}
