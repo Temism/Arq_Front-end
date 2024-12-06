@@ -130,6 +130,7 @@
             id="tipoUsuario"
             formControlName="tipoUsuario"
             class="form-control"
+            (change)="onTipoUsuarioChange($event)"
           >
             <option value="1">Cliente</option>
             <option value="2">Profesional</option>
@@ -145,6 +146,52 @@
           Registrarse
         </button>
       </form>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="especialidadesModal"
+    tabindex="-1"
+    aria-labelledby="especialidadesModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg custom-modal-width">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="especialidadesModalLabel">
+            Seleccione sus Especialidades
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li *ngFor="let esp of especialidades" class="list-group-item">
+              <input
+                type="checkbox"
+                [value]="esp.idEspecialidad"
+                (change)="onEspecialidadChange($event)"
+              />
+              {{ esp.descripcion }}
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="guardarEspecialidades()"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

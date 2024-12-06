@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsuarioService } from '../../Services/usuario.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { ListarEspecialidadesService } from '../../Services/listar-especialidades.service';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { AsignarEspecialidadesService } from '../../Services/asignar-especialidades.service';
+import { Usuario } from '../../Models/usuario';
 
 @Component({
   selector: 'app-usuarioform',
@@ -15,11 +18,16 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class UsuarioformComponent implements OnInit {
   registroForm!: FormGroup;
+  especialidades: any[] = [];
+  especialidadesSeleccionadas: number[] = [];
+  http: any;
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private lista: ListarEspecialidadesService,
+    private asignar: AsignarEspecialidadesService
   ) {}
 
   ngOnInit(): void {
@@ -34,20 +42,73 @@ export class UsuarioformComponent implements OnInit {
         idTipoUsuario: [1, [Validators.required]],
       }),
     });
+    this.cargarEspecialidades();
+  }
+
+  cargarEspecialidades() {
+    this.lista.getallespecialidades().subscribe((data) => {
+      this.especialidades = data;
+      console.log(data);
+    });
+  }
+
+  onTipoUsuarioChange(event: any) {
+    if (event.target.value === '2') {
+      const modalElement = document.getElementById('especialidadesModal');
+      if (modalElement) {
+        modalElement.classList.add('show');
+        modalElement.style.display = 'block';
+        modalElement.setAttribute('aria-modal', 'true');
+        modalElement.removeAttribute('aria-hidden');
+      }
+    }
+  }
+
+  onEspecialidadChange(event: any) {
+    const id = +event.target.value;
+    if (event.target.checked) {
+      this.especialidadesSeleccionadas.push(id);
+    } else {
+      this.especialidadesSeleccionadas =
+        this.especialidadesSeleccionadas.filter((espId) => espId !== id);
+    }
+  }
+
+  guardarEspecialidades() {
+    const modalElement = document.getElementById('especialidadesModal');
+
+    if (modalElement) {
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+      modalElement.setAttribute('aria-hidden', 'true');
+      modalElement.removeAttribute('aria-modal');
+    }
+    console.log(
+      'Especialidades seleccionadas:',
+      this.especialidadesSeleccionadas
+    );
   }
 
   onSubmit(): void {
     if (this.registroForm.valid) {
-      // Obtener los valores del formulario
       const usuario = this.registroForm.value;
 
-      // Llamar al servicio para crear el usuario
       this.usuarioService.createUser(usuario).subscribe(
-        (response) => {
-          console.log('Registro exitoso', response);
+        (response: Usuario) => {
+          const userId = response.idUsuario;
+          console.log('Usuario registrado con ID:', userId);
+          this.asignar
+            .asignarEspecialidades(userId, this.especialidadesSeleccionadas)
+            .subscribe(
+              (response: any) => {
+                console.log('Especialidades asignadas correctamente');
 
-          // Redirigir a la página de inicio de sesión
-          this.router.navigate(['/login']);
+                this.router.navigate(['/login']);
+              },
+              (error) => {
+                console.error('Error al registrar', error);
+              }
+            );
         },
         (error) => {
           console.error('Error al registrar', error);
