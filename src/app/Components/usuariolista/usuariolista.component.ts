@@ -22,13 +22,13 @@ import { Especialidad } from '../../Models/especialidad';
 })
 export class UsuariolistaComponent implements OnInit {
   usuario: Usuario[] = [];
-  especialidades: Especialidad[] = []; // Lista de especialidades
-  filteredUsuarios: Usuario[] = []; // Lista de usuarios filtrados
+  especialidades: Especialidad[] = [];
+  filteredUsuarios: Usuario[] = [];
   showModal = false;
   reservaForm: FormGroup;
   selectedUser: any;
-  especialidadFilter: string | null = null; // Filtro por especialidads
-  nombreFilter: string = ''; // Filtro por nombre de usuario
+  especialidadFilter: string | null = null;
+  nombreFilter: string = '';
 
   constructor(
     private usuarioservice: UsuarioService,
@@ -90,22 +90,18 @@ export class UsuariolistaComponent implements OnInit {
     console.log('Filtro nombre:', this.nombreFilter);
 
     this.filteredUsuarios = this.usuario.filter((user) => {
-      // Filtro por nombre
       const matchesNombre = user.nombre
         .toLowerCase()
         .includes((this.nombreFilter || '').toLowerCase());
 
-      // Si no hay filtro de especialidad, solo aplicamos el filtro de nombre
       if (this.especialidadFilter === null) {
         return matchesNombre;
       }
 
-      // Verificar que el usuario tenga especialidades definidas
       if (!user.especialidades || user.especialidades.length === 0) {
         return false;
       }
 
-      // Verificar si el usuario tiene la especialidad específica seleccionada
       const matchesEspecialidad = user.especialidades.includes(
         this.especialidadFilter
       );

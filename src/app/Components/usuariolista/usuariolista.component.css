@@ -1,17 +1,15 @@
 /* Estilos para la imagen */
 img {
-  height: 40%; /* Altura fija para uniformidad */
+  height: 40%;
   width: 60%;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
 }
 
-/* Espaciado entre columnas */
 div [class^="col-"] {
   padding: 15px;
 }
 
-/* Estilos base de la card */
 .card {
   position: relative;
   transition: all 0.4s ease;
@@ -22,7 +20,6 @@ div [class^="col-"] {
   overflow: hidden;
 }
 
-/* Título de la card */
 .card-title {
   font-size: 16px;
   font-weight: 600;
@@ -30,13 +27,11 @@ div [class^="col-"] {
   margin-bottom: 15px;
 }
 
-/* Cuerpo de la card */
 .card-body {
   padding: 20px;
   background: linear-gradient(to bottom, #ffffff, #f8f9fa);
 }
 
-/* Texto dentro de la card */
 .card-text {
   height: auto;
   min-height: 80px;
@@ -45,13 +40,11 @@ div [class^="col-"] {
   line-height: 1.6;
 }
 
-/* Efecto hover de la card */
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Estrellas de calificación */
 .star,
 [class*="star"] {
   color: #ffd700;
@@ -59,20 +52,17 @@ div [class^="col-"] {
   letter-spacing: 2px;
 }
 
-/* Información de contacto */
 .card-text strong {
   color: #3498db;
   font-weight: 600;
 }
 
-/* Contenedor de estrellas */
 div:has(> ng-container) {
   margin-top: 10px;
   padding: 5px 0;
   border-top: 1px solid #eee;
 }
 
-/* Media queries para responsividad */
 @media (max-width: 768px) {
   .card {
     margin-bottom: 20px;
