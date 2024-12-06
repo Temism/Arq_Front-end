@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let user of usuario">
       <div class="card mb-3 shadow">
-        <!-- Imagen en la parte superior de la card -->
         <img
           [src]="
             user.imagenUrl ||
@@ -18,16 +17,88 @@
           <p class="card-text">
             <strong>Email:</strong> {{ user.email }}<br />
             <strong>Teléfono:</strong> {{ user.telefono }}<br />
-            <strong>Calificación:</strong>
+            <strong>Calificación: </strong>
+            <ng-container *ngFor="let star of getStars(user.calificacionprom)"
+              >&#9733;</ng-container
+            >
           </p>
 
           <div>
-            <ng-container *ngFor="let star of getStars(user.calificacionprom)">
-              &#9733;
-            </ng-container>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="mostrarFormulario(user)"
+            >
+              Reservar atención
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal de Reserva -->
+<div
+  class="modal"
+  [class.show]="showModal"
+  [style.display]="showModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reservar atención</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cerrarModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="reservaForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-control" formControlName="fecha" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Hora</label>
+            <select class="form-control" formControlName="hora">
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="12:00">12:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Motivo de la consulta</label>
+            <textarea
+              class="form-control"
+              formControlName="motivo"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cerrarModal()"
+            >
+              Cerrar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!reservaForm.valid"
+            >
+              Confirmar reserva
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>

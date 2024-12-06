@@ -1,66 +1,84 @@
+/* Estilos para la imagen */
 img {
-  height: 40%;
-  width: 40%;
+  height: 40%; /* Altura fija para uniformidad */
+  width: 60%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
+/* Espaciado entre columnas */
 div [class^="col-"] {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 15px;
 }
+
+/* Estilos base de la card */
 .card {
   position: relative;
-  transition: 0.5s;
+  transition: all 0.4s ease;
   cursor: pointer;
-}
-.card-title {
-  font-size: 15px;
-  transition: 1s;
-  cursor: pointer;
-}
-.card-title i {
-  font-size: 15px;
-  transition: 1s;
-  cursor: pointer;
-  color: #ffa710;
-}
-.card-title i:hover {
-  transform: scale(1.25) rotate(100deg);
-  color: #18d4ca;
-}
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
-}
-.card-text {
-  height: 80px;
+  border: none;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.card::before,
-.card::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: scale3d(0, 0, 1);
-  transition: transform 0.3s ease-out 0s;
-  background: rgba(255, 255, 255, 0.1);
-  content: "";
-  pointer-events: none;
+/* Título de la card */
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
 }
-.card::before {
-  transform-origin: left top;
+
+/* Cuerpo de la card */
+.card-body {
+  padding: 20px;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
 }
-.card::after {
-  transform-origin: right bottom;
+
+/* Texto dentro de la card */
+.card-text {
+  height: auto;
+  min-height: 80px;
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 1.6;
 }
-.card:hover::before,
-.card:hover::after,
-.card:focus::before,
-.card:focus::after {
-  transform: scale3d(1, 1, 1);
+
+/* Efecto hover de la card */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
-.star {
-  color: rgb(234, 203, 29);
-  font-size: 40px;
+
+/* Estrellas de calificación */
+.star,
+[class*="star"] {
+  color: #ffd700;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+/* Información de contacto */
+.card-text strong {
+  color: #3498db;
+  font-weight: 600;
+}
+
+/* Contenedor de estrellas */
+div:has(> ng-container) {
+  margin-top: 10px;
+  padding: 5px 0;
+  border-top: 1px solid #eee;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  img {
+    height: 180px;
+  }
 }

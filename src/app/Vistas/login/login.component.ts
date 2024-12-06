@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from '../../Components/footer/footer.component';
 import { ToolbarComponent } from '../../Components/toolbar/toolbar.component';
+import { UsuarioService } from '../../Services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +20,15 @@ import { ToolbarComponent } from '../../Components/toolbar/toolbar.component';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
+  usuarios: any[] = [];
   loginForm: FormGroup;
   isLoading = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private usuarioService: UsuarioService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -30,27 +36,38 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Aquí puedes inicializar cualquier cosa que necesites al cargar el componente
+    this.usuarioService.getalluser().subscribe((data: any[]) => {
+      this.usuarios = data;
+      console.log('Usuarios:', this.usuarios);
+    });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
+      const { email, password } = this.loginForm.value;
 
-      // Simulando una llamada al backend
       setTimeout(() => {
         this.isLoading = false;
-        // Aquí implementarías la lógica real de login con tu servicio
-        console.log('Credenciales:', this.loginForm.value);
-        // Ejemplo de navegación después del login exitoso
-        // this.router.navigate(['/dashboard']);
+
+        const usuarioValido = this.usuarios.find(
+          (user) => user.email === email && user.contrasena === password
+        );
+
+        if (usuarioValido) {
+          console.log('Login exitoso:', usuarioValido);
+          alert(`Bienvenido, ${usuarioValido.nombre || 'Usuario'}!`);
+          this.router.navigate(['/home']);
+        } else {
+          console.error('Credenciales inválidas');
+          alert('Correo o contraseña incorrectos');
+        }
       }, 1500);
     } else {
       this.markFormGroupTouched(this.loginForm);
     }
   }
 
-  // Método auxiliar para marcar todos los campos como tocados
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach((control) => {
       control.markAsTouched();
@@ -61,7 +78,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Métodos getter para facilitar la validación en el template
   get email() {
     return this.loginForm.get('email');
   }

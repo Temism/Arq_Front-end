@@ -6,6 +6,9 @@ import { EresProfesionalComponent } from './Vistas/eres-profesional/eres-profesi
 import { NgModule } from '@angular/core';
 import { BienvenidoComponent } from './Vistas/bienvenido/bienvenido.component';
 import { RegistroComponent } from './Vistas/registro/registro.component';
+import { ServiciosComponent } from './Vistas/servicios/servicios.component';
+import { PerfilCliComponent } from './Vistas/perfil-cli/perfil-cli.component';
+import { ProfesionalesComponent } from './Vistas/profesionales/profesionales.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,6 +18,9 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'como-funciona', component: ComoFuncionaComponent },
   { path: 'eres-profesional', component: EresProfesionalComponent },
+  { path: 'servicios', component: ServiciosComponent },
+  { path: 'perfil-cli', component: PerfilCliComponent },
+  { path: 'profesionales', component: ProfesionalesComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

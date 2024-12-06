@@ -5,9 +5,9 @@
 <div class="container-fluid">
   <div class="row main-content bg-success text-center">
     <div class="col-md-4 text-center company__info">
-      <span class="company__logo"
-        ><h2><span class="fa fa-android"></span></h2
-      ></span>
+      <span class="company__logo">
+        <h2><span class="fa fa-android"></span></h2>
+      </span>
       <h4 class="company_title">Fix Finder</h4>
     </div>
     <div class="col-md-8 col-xs-12 col-sm-12 login_form">
@@ -16,33 +16,55 @@
           <h2>Iniciar Sesión</h2>
         </div>
         <div class="row">
-          <form control="" class="form-group">
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="form-group"
+          >
             <div class="row">
               <input
                 type="text"
-                name="username"
-                id="username"
+                formControlName="email"
                 class="form__input"
                 placeholder="Email"
               />
+              <div *ngIf="email?.invalid && email?.touched" class="error">
+                <small *ngIf="email?.errors?.['required']"
+                  >El email es requerido</small
+                >
+                <small *ngIf="email?.errors?.['email']">Email inválido</small>
+              </div>
             </div>
             <div class="row">
               <input
                 type="password"
-                name="password"
-                id="password"
+                formControlName="password"
                 class="form__input"
                 placeholder="Contraseña"
               />
+              <div *ngIf="password?.invalid && password?.touched" class="error">
+                <small *ngIf="password?.errors?.['required']"
+                  >La contraseña es requerida</small
+                >
+                <small *ngIf="password?.errors?.['minlength']">
+                  La contraseña debe tener al menos 6 caracteres
+                </small>
+              </div>
             </div>
 
             <div class="row-12">
-              <input type="submit" value="Iniciar Sesión" class="btn" />
+              <button
+                type="submit"
+                class="btn"
+                [disabled]="loginForm.invalid || isLoading"
+              >
+                {{ isLoading ? "Cargando..." : "Iniciar Sesión" }}
+              </button>
             </div>
           </form>
         </div>
         <div class="row">
-          <p>No tienes una cuenta? <a href="registro">Registrate aca</a></p>
+          <p>No tienes una cuenta? <a href="registro">Registrate acá</a></p>
         </div>
         <div class="row-12">
           Olvidaste tu contraseña?<a href="#">Restablecer contraseña</a>
@@ -51,6 +73,7 @@
     </div>
   </div>
 </div>
+
 <footer>
   <app-footer></app-footer>
 </footer>
