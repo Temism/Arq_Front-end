@@ -1,6 +1,41 @@
 <div class="container mt-4">
+  <!-- Filtros de búsqueda -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="nombreFilter" class="form-label">Buscar por nombre</label>
+      <input
+        type="text"
+        id="nombreFilter"
+        class="form-control"
+        [(ngModel)]="nombreFilter"
+        (ngModelChange)="aplicarFiltros()"
+        placeholder="Buscar por nombre"
+      />
+    </div>
+
+    <div class="col-md-4">
+      <label for="especialidadFilter" class="form-label"
+        >Filtrar por especialidad</label
+      >
+      <select
+        [(ngModel)]="especialidadFilter"
+        (ngModelChange)="aplicarFiltros()"
+        class="form-control"
+      >
+        <option [ngValue]="null">Selecciona una especialidad</option>
+        <option
+          *ngFor="let especialidad of especialidades"
+          [ngValue]="especialidad.descripcion"
+        >
+          {{ especialidad.descripcion }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Lista de usuarios -->
   <div class="row">
-    <div class="col-md-4" *ngFor="let user of usuario">
+    <div class="col-md-4" *ngFor="let user of filteredUsuarios">
       <div class="card mb-3 shadow">
         <img
           [src]="
@@ -17,12 +52,12 @@
           <p class="card-text">
             <strong>Email:</strong> {{ user.email }}<br />
             <strong>Teléfono:</strong> {{ user.telefono }}<br />
-            <strong>Calificación: </strong>
-            <ng-container *ngFor="let star of getStars(user.calificacionprom)"
-              >&#9733;</ng-container
-            >
+            <strong>Especialidades:</strong> {{ user.especialidades }} <br />
+            <strong>Calificación:</strong>
+            <ng-container *ngFor="let star of getStars(user.calificacionprom)">
+              &#9733;
+            </ng-container>
           </p>
-
           <div>
             <button
               type="button"
@@ -101,4 +136,5 @@
     </div>
   </div>
 </div>
+
 <div class="modal-backdrop fade show" *ngIf="showModal"></div>

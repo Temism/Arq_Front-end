@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Especialidad } from '../Models/especialidad';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class ListarEspecialidadesService {
 
   constructor(private http: HttpClient) {}
 
-  getallespecialidades(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
+  getallespecialidades(): Observable<Especialidad[]> {
+    return this.http.get<Especialidad[]>(`${this.baseUrl}`);
   }
 }

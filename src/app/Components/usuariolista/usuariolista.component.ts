@@ -6,22 +6,36 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
+import { AsignarEspecialidadesService } from '../../Services/asignar-especialidades.service';
+import { ListarEspecialidadesService } from '../../Services/listar-especialidades.service';
+import { Usuario } from '../../Models/usuario';
+import { Especialidad } from '../../Models/especialidad';
 
 @Component({
   selector: 'app-usuariolista',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './usuariolista.component.html',
-  styleUrl: './usuariolista.component.css',
+  styleUrls: ['./usuariolista.component.css'],
 })
 export class UsuariolistaComponent implements OnInit {
-  usuario: any[] = [];
+  usuario: Usuario[] = [];
+  especialidades: Especialidad[] = []; // Lista de especialidades
+  filteredUsuarios: Usuario[] = []; // Lista de usuarios filtrados
   showModal = false;
   reservaForm: FormGroup;
   selectedUser: any;
+  especialidadFilter: string | null = null; // Filtro por especialidads
+  nombreFilter: string = ''; // Filtro por nombre de usuario
 
-  constructor(private usuarioservice: UsuarioService, private fb: FormBuilder) {
+  constructor(
+    private usuarioservice: UsuarioService,
+    private fb: FormBuilder,
+    private especialdiadesservice: AsignarEspecialidadesService,
+    private listarEspecialidadesservice: ListarEspecialidadesService
+  ) {
     this.reservaForm = this.fb.group({
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
@@ -30,10 +44,79 @@ export class UsuariolistaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarioservice.getalluser().subscribe((data: any[]) => {
-      this.usuario = data.filter(
-        (user) => user.tipoUsuario.idTipoUsuario === 2
+    this.usuarioservice.getalluser().subscribe({
+      next: (data: Usuario[]) => {
+        const usuariosFiltrados = data.filter(
+          (user) => user.tipoUsuario.idTipoUsuario === 2
+        );
+
+        usuariosFiltrados.forEach((user) => {
+          this.especialdiadesservice
+            .obtenerespecialidades(user.idUsuario)
+            .subscribe({
+              next: (especialidades) => {
+                user.especialidades = especialidades;
+                console.log(
+                  `Especialidades para ${user.nombre}:`,
+                  especialidades
+                );
+              },
+              error: (error) =>
+                console.error(
+                  `Error al cargar especialidades para ${user.nombre}:`,
+                  error
+                ),
+            });
+        });
+
+        this.usuario = usuariosFiltrados;
+        this.filteredUsuarios = usuariosFiltrados;
+      },
+      error: (error) => console.error('Error al cargar usuarios:', error),
+    });
+
+    this.listarEspecialidadesservice.getallespecialidades().subscribe({
+      next: (especialidades) => {
+        console.log('Especialidades cargadas:', especialidades);
+        this.especialidades = especialidades;
+      },
+      error: (error) => console.error('Error al cargar especialidades:', error),
+    });
+  }
+
+  aplicarFiltros() {
+    console.log('Aplicando filtros:');
+    console.log('Filtro especialidad:', this.especialidadFilter);
+    console.log('Filtro nombre:', this.nombreFilter);
+
+    this.filteredUsuarios = this.usuario.filter((user) => {
+      // Filtro por nombre
+      const matchesNombre = user.nombre
+        .toLowerCase()
+        .includes((this.nombreFilter || '').toLowerCase());
+
+      // Si no hay filtro de especialidad, solo aplicamos el filtro de nombre
+      if (this.especialidadFilter === null) {
+        return matchesNombre;
+      }
+
+      // Verificar que el usuario tenga especialidades definidas
+      if (!user.especialidades || user.especialidades.length === 0) {
+        return false;
+      }
+
+      // Verificar si el usuario tiene la especialidad específica seleccionada
+      const matchesEspecialidad = user.especialidades.includes(
+        this.especialidadFilter
       );
+
+      console.log(`Usuario ${user.nombre}:`, {
+        especialidades: user.especialidades,
+        filtroEspecialidad: this.especialidadFilter,
+        coincide: matchesEspecialidad,
+      });
+
+      return matchesNombre && matchesEspecialidad;
     });
   }
 
@@ -56,7 +139,7 @@ export class UsuariolistaComponent implements OnInit {
       };
 
       console.log('Reserva a enviar:', reserva);
-      // Aquí iría la lógica para enviar la reserva al backend
+
       this.cerrarModal();
     }
   }

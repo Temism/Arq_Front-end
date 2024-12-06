@@ -17,4 +17,9 @@ export class AsignarEspecialidadesService {
     const url = `${this.baseUrl}/${idUsuario}/asignar-especialidades`;
     return this.http.post(url, especialidades);
   }
+
+  obtenerespecialidades(idUsuario: number): Observable<any> {
+    const url = `${this.baseUrl}/${idUsuario}/especialidades`;
+    return this.http.get(url);
+  }
 }

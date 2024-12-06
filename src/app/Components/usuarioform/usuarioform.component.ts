@@ -21,6 +21,7 @@ export class UsuarioformComponent implements OnInit {
   especialidades: any[] = [];
   especialidadesSeleccionadas: number[] = [];
   http: any;
+  calificacion: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -53,8 +54,15 @@ export class UsuarioformComponent implements OnInit {
   }
 
   onTipoUsuarioChange(event: any) {
-    if (event.target.value === '2') {
+    const valor = event.target.value;
+    this.registroForm
+      .get('tipoUsuario')
+      ?.get('idTipoUsuario')
+      ?.setValue(Number(valor));
+
+    if (valor === '2') {
       const modalElement = document.getElementById('especialidadesModal');
+      this.calificacion = 5;
       if (modalElement) {
         modalElement.classList.add('show');
         modalElement.style.display = 'block';
@@ -91,8 +99,21 @@ export class UsuarioformComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registroForm.valid) {
-      const usuario = this.registroForm.value;
+      const formValues = this.registroForm.value;
+      const usuario = {
+        nombre: formValues.nombre,
+        apPaterno: formValues.apPaterno,
+        apMaterno: formValues.apMaterno,
+        email: formValues.email,
+        telefono: formValues.telefono,
+        contrasena: formValues.contrasena,
+        calificacionprom: this.calificacion,
+        tipoUsuario: {
+          idTipoUsuario: formValues.tipoUsuario.idTipoUsuario,
+        },
+      };
 
+      console.log('Usuario a registrar:', usuario);
       this.usuarioService.createUser(usuario).subscribe(
         (response: Usuario) => {
           const userId = response.idUsuario;
