@@ -9,6 +9,7 @@ import { RegistroComponent } from './Vistas/registro/registro.component';
 import { ServiciosComponent } from './Vistas/servicios/servicios.component';
 import { PerfilCliComponent } from './Vistas/perfil-cli/perfil-cli.component';
 import { ProfesionalesComponent } from './Vistas/profesionales/profesionales.component';
+import { ServiciospubliComponent } from './Vistas/serviciospubli/serviciospubli.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'servicios', component: ServiciosComponent },
   { path: 'perfil-cli', component: PerfilCliComponent },
   { path: 'profesionales', component: ProfesionalesComponent },
+  { path: 'serviciospubli', component: ServiciospubliComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

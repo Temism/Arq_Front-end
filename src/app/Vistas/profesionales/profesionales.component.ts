@@ -7,12 +7,7 @@ import { ListaEspecialidadesComponent } from '../../Components/lista-especialida
 @Component({
   selector: 'app-profesionales',
   standalone: true,
-  imports: [
-    CommonModule,
-    NavComponent,
-    UsuariolistaComponent,
-    ListaEspecialidadesComponent,
-  ],
+  imports: [CommonModule, NavComponent, UsuariolistaComponent],
   templateUrl: './profesionales.component.html',
   styleUrl: './profesionales.component.css',
 })

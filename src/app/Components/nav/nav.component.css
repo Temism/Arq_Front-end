@@ -49,6 +49,11 @@ body {
   list-style: none;
 }
 
+.menu li {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
 .menu a {
   margin-right: 8px;
 }
