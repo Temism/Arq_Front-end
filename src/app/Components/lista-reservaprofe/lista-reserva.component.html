@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Novedades!</h1>
+  <div class="Lista-reservas-profe">
+    <div class="reservas-container">
+      <div *ngFor="let reserva of reservas" class="reserva-card">
+        <!-- Encabezado de la reserva -->
+        <div class="reserva-header">
+          <h3>Reserva #{{ reserva.idReserva }}</h3>
+          <span class="estado {{ reserva.estadoReserva | lowercase }}">
+            {{ reserva.estadoReserva }}
+          </span>
+        </div>
+
+        <div class="reserva-body">
+          <p>
+            <i class="fa fa-calendar"></i> <strong>Fecha:</strong>
+            {{ reserva.fechaReserva | date : "shortDate" }}
+          </p>
+          <p>
+            <i class="fa fa-clock"></i> <strong>Hora:</strong>
+            {{ reserva.horaReserva }}
+          </p>
+          <p>
+            <i class="fa fa-info-circle"></i> <strong>Motivo:</strong>
+            {{ reserva.motivo }}
+          </p>
+        </div>
+
+        <div
+          class="reserva-footer text-center mt-3"
+          *ngIf="reserva.estadoReserva === 'Pendiente'"
+        >
+          <button
+            class="btn btn-success me-2"
+            (click)="aceptarReserva(reserva.idReserva)"
+          >
+            Aceptar
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="rechazarReserva(reserva.idReserva)"
+          >
+            Rechazar
+          </button>
+        </div>
+
+        <div
+          class="reserva-footer text-center mt-3"
+          *ngIf="reserva.estadoReserva !== 'Pendiente'"
+        >
+          <p class="text-muted">Estado actual: {{ reserva.estadoReserva }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

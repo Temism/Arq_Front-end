@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reserva } from '../Models/reserva';
 
@@ -9,6 +9,7 @@ import { Reserva } from '../Models/reserva';
 export class ReservaService {
   private baseUrl = 'http://localhost:8080/reservas';
   private alterativa = 'http://localhost:8080/usuarios';
+  private alterativa2 = 'http://localhost:8080/usuarios/esp';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,8 +21,13 @@ export class ReservaService {
     return this.httpClient.post<Reserva>(`${this.baseUrl}`, reserva);
   }
 
-  updateReserva(id: number, value: any): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/edit/${id}`, value);
+  actualizarEstadoReserva(id: number, estado: string): Observable<Reserva> {
+    const params = new HttpParams().set('estado', estado);
+    return this.httpClient.patch<Reserva>(
+      `${this.baseUrl}/${id}/estado`,
+      null,
+      { params }
+    );
   }
 
   deleteReserva(id: number): Observable<any> {
@@ -32,5 +38,9 @@ export class ReservaService {
 
   getReserva(id: number): Observable<Reserva[]> {
     return this.httpClient.get<Reserva[]>(`${this.alterativa}/${id}/reservas`);
+  }
+
+  getReservaEspecialista(id: number): Observable<Reserva[]> {
+    return this.httpClient.get<Reserva[]>(`${this.alterativa2}/${id}/reservas`);
   }
 }

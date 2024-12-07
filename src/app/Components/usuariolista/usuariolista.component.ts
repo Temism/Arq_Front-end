@@ -13,7 +13,6 @@ import { ListarEspecialidadesService } from '../../Services/listar-especialidade
 import { Usuario } from '../../Models/usuario';
 import { Especialidad } from '../../Models/especialidad';
 import { ReservaService } from '../../Services/reserva.service';
-import { Reserva } from '../../Models/reserva';
 
 @Component({
   selector: 'app-usuariolista',

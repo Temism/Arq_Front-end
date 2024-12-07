@@ -1,0 +1,162 @@
+<div class="container mt-4">
+  <!-- Botón para abrir el modal de crear servicio -->
+  <div class="mt-4">
+    <h3>Crear Nuevo Servicio</h3>
+    <button class="btn btn-success" (click)="abrirModal()">
+      Crear Servicio
+    </button>
+  </div>
+
+  <!-- Lista de servicios -->
+  <div class="row" style="margin-top: 20px">
+    <h3>Servicios Creados</h3>
+    <div class="col-md-4" *ngFor="let servicio of serv">
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+          <h5 class="card-title">{{ servicio.nombreServicio }}</h5>
+          <p class="card-text">
+            <strong>Descripción: </strong> {{ servicio.descripcionServicio
+            }}<br />
+            <strong>Precio: </strong> ${{ servicio.valorServicio }} <br />
+            <strong>Horario: </strong> {{ servicio.horario }} <br />
+            <strong>Especialista: </strong> {{ servicio.usuario?.nombre }}
+            <br />
+          </p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" (click)="abrirModal(servicio)">
+              Editar
+            </button>
+            <button
+              class="btn btn-danger"
+              (click)="eliminarServicio(servicio.idServicio)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal"
+    [class.show]="showModal"
+    [class.d-block]="showModal"
+    *ngIf="showModal"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ selectedServicio ? "Editar Servicio" : "Crear Servicio" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="cerrarModal()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="servicioForm" (ngSubmit)="guardarServicio()">
+            <div class="mb-3">
+              <label class="form-label">Nombre del servicio</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nombreServicio"
+                placeholder="Ingrese el nombre del servicio"
+              />
+              <div
+                class="text-danger small"
+                *ngIf="
+                  servicioForm.get('nombreServicio')?.touched &&
+                  servicioForm.get('nombreServicio')?.invalid
+                "
+              >
+                El nombre es requerido
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea
+                class="form-control textarea-descripcion"
+                formControlName="descripcionServicio"
+                placeholder="Ingrese la descripción del servicio"
+                rows="4"
+              ></textarea>
+              <div
+                class="text-danger small"
+                *ngIf="
+                  servicioForm.get('descripcionServicio')?.touched &&
+                  servicioForm.get('descripcionServicio')?.invalid
+                "
+              >
+                La descripción es requerida
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Precio</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="valorServicio"
+                placeholder="Ingrese el precio"
+              />
+              <div
+                class="text-danger small"
+                *ngIf="
+                  servicioForm.get('valorServicio')?.touched &&
+                  servicioForm.get('valorServicio')?.invalid
+                "
+              >
+                El precio es requerido y debe ser mayor a 0
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Horario</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="horario"
+                placeholder="Ej: Lunes a Viernes 9:00 - 18:00"
+              />
+              <div
+                class="text-danger small"
+                *ngIf="
+                  servicioForm.get('horario')?.touched &&
+                  servicioForm.get('horario')?.invalid
+                "
+              >
+                El horario es requerido
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!servicioForm.valid"
+              >
+                {{ selectedServicio ? "Actualizar" : "Crear" }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="cerrarModal()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backdrop -->
+  <div class="modal-backdrop fade show" *ngIf="showModal"></div>
+</div>

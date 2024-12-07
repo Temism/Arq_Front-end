@@ -1,26 +1,25 @@
 <div class="dashboard">
-    <nav class="navbar">
-      <div class="logo-container">
-        <h1 class="logo-title">Fix Finder</h1>
-      </div>
-      <div class="menu">
-        <ul>
-          <li class="active">
-            <i class="fa fa-user"></i>
-            <a href="perfil-cli">Perfil</a>
-          </li>
-          <li>
-            <i class="fa fa-cogs"></i>
-            <span>Mis Servicios</span>
-          </li>
-          <li>
-            <i class="fa fa-sign-out"></i>
-            <a>Cerrar Sesión</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  
-    <div class="main-container"></div>
-  </div>
-  
+  <nav class="navbar">
+    <div class="logo-container">
+      <h1 class="logo-title">Fix Finder</h1>
+    </div>
+    <div class="menu">
+      <ul>
+        <li class="active">
+          <i class="fa fa-user"></i>
+          <a href="home">Home</a>
+        </li>
+        <li>
+          <i class="fa fa-cogs"></i>
+          <a href="prof">Mis Servicios</a>
+        </li>
+        <li>
+          <i class="fa fa-sign-out"></i>
+          <a (click)="cerrarsesion()">Cerrar Sesión</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="main-container"></div>
+</div>

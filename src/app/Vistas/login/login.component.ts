@@ -58,7 +58,13 @@ export class LoginComponent implements OnInit {
           console.log('Login exitoso:', usuarioValido);
           alert(`Bienvenido, ${usuarioValido.nombre || 'Usuario'}!`);
           localStorage.setItem('user', JSON.stringify(usuarioValido));
-          this.router.navigate(['/perfil-cli']);
+          console.log(usuarioValido);
+
+          if (usuarioValido.tipoUsuario.idTipoUsuario === 1) {
+            this.router.navigate(['/perfil-cli']);
+          } else {
+            this.router.navigate(['/home']);
+          }
         } else {
           console.error('Credenciales inválidas');
           alert('Correo o contraseña incorrectos');

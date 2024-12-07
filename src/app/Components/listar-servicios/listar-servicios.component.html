@@ -1,1 +1,95 @@
-<p>listar-servicios works!</p>
+<div class="container mt-4">
+  <!-- Lista de servicios -->
+  <div class="row">
+    <div class="col-md-4" *ngFor="let servicio of serv">
+      <div class="card mb-3 shadow">
+        <img
+          [src]="'https://www.aquigasfiter.cl/images/gasfiteria/llaves.jpg'"
+          class="card-img-top"
+          alt="Imagen del servicio"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ servicio.nombreServicio }}</h5>
+          <p class="card-text">
+            <strong>Descripción: </strong> {{ servicio.descripcionServicio }}
+
+            <br />
+            <strong>Precio: </strong> ${{ servicio.valorServicio }} <br />
+            <strong>Horario: </strong> {{ servicio.horario }} <br />
+            <strong>Especialista: </strong> {{ servicio.usuario.nombre }} <br />
+            <strong>Email: </strong> {{ servicio.usuario.email }} <br />
+            <strong>Telefono: </strong> +56 {{ servicio.usuario.telefono }}
+            <br />
+          </p>
+          <button class="btn btn-primary" (click)="mostrarFormulario(servicio)">
+            Reservar servicio
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Reserva -->
+<div
+  class="modal fade"
+  [class.show]="showModal"
+  [class.d-block]="showModal"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Reservar el servicio: {{ selectedServicio?.nombreServicio }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cerrarModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" [formGroup]="reservaForm">
+          <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-control" formControlName="fecha" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Hora</label>
+            <select class="form-control" formControlName="hora">
+              <option value="">Seleccione una hora</option>
+              <option value="08:00">08:00</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!reservaForm.valid"
+            >
+              Confirmar reserva
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>
