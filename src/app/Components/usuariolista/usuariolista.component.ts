@@ -12,6 +12,8 @@ import { AsignarEspecialidadesService } from '../../Services/asignar-especialida
 import { ListarEspecialidadesService } from '../../Services/listar-especialidades.service';
 import { Usuario } from '../../Models/usuario';
 import { Especialidad } from '../../Models/especialidad';
+import { ReservaService } from '../../Services/reserva.service';
+import { Reserva } from '../../Models/reserva';
 
 @Component({
   selector: 'app-usuariolista',
@@ -21,20 +23,23 @@ import { Especialidad } from '../../Models/especialidad';
   styleUrls: ['./usuariolista.component.css'],
 })
 export class UsuariolistaComponent implements OnInit {
+  user = JSON.parse(localStorage.getItem('user') || '{}');
   usuario: Usuario[] = [];
   especialidades: Especialidad[] = [];
   filteredUsuarios: Usuario[] = [];
   showModal = false;
   reservaForm: FormGroup;
-  selectedUser: any;
+  selectedUser: Usuario | null = null;
   especialidadFilter: string | null = null;
   nombreFilter: string = '';
+  today: any;
 
   constructor(
     private usuarioservice: UsuarioService,
     private fb: FormBuilder,
     private especialdiadesservice: AsignarEspecialidadesService,
-    private listarEspecialidadesservice: ListarEspecialidadesService
+    private listarEspecialidadesservice: ListarEspecialidadesService,
+    private reservaservice: ReservaService
   ) {
     this.reservaForm = this.fb.group({
       fecha: ['', Validators.required],
@@ -56,10 +61,6 @@ export class UsuariolistaComponent implements OnInit {
             .subscribe({
               next: (especialidades) => {
                 user.especialidades = especialidades;
-                console.log(
-                  `Especialidades para ${user.nombre}:`,
-                  especialidades
-                );
               },
               error: (error) =>
                 console.error(
@@ -77,7 +78,6 @@ export class UsuariolistaComponent implements OnInit {
 
     this.listarEspecialidadesservice.getallespecialidades().subscribe({
       next: (especialidades) => {
-        console.log('Especialidades cargadas:', especialidades);
         this.especialidades = especialidades;
       },
       error: (error) => console.error('Error al cargar especialidades:', error),
@@ -116,7 +116,7 @@ export class UsuariolistaComponent implements OnInit {
     });
   }
 
-  mostrarFormulario(user: any) {
+  mostrarFormulario(user: Usuario) {
     this.selectedUser = user;
     this.showModal = true;
   }
@@ -124,19 +124,43 @@ export class UsuariolistaComponent implements OnInit {
   cerrarModal() {
     this.showModal = false;
     this.reservaForm.reset();
+    this.selectedUser = null;
   }
 
   onSubmit() {
-    if (this.reservaForm.valid) {
-      const reserva = {
-        ...this.reservaForm.value,
-        profesionalId: this.selectedUser.id,
-        fecha: new Date(this.reservaForm.value.fecha),
+    if (this.reservaForm.valid && this.selectedUser && this.user.idUsuario) {
+      const fecha = this.reservaForm.value.fecha;
+      const hora = this.reservaForm.value.hora;
+      const fechaHora = `${fecha}T${hora}:00`;
+
+      const reservaData = {
+        fechaReserva: fechaHora,
+        estadoReserva: 'Pendiente',
+        horaReserva: this.reservaForm.value.hora,
+        motivo: this.reservaForm.value.motivo,
+        usuario: {
+          idUsuario: this.user.idUsuario,
+        },
+        especialista: {
+          idUsuario: this.selectedUser.idUsuario,
+        },
       };
 
-      console.log('Reserva a enviar:', reserva);
+      console.log('Reserva a enviar:', reservaData);
 
-      this.cerrarModal();
+      this.reservaservice.createReserva(reservaData).subscribe({
+        next: (response) => {
+          console.log('Reserva creada exitosamente:', response);
+          alert('Reserva creada con éxito');
+          this.cerrarModal();
+        },
+        error: (error) => {
+          console.error('Error al crear la reserva:', error);
+          alert('Ocurrió un error al crear la reserva');
+        },
+      });
+    } else {
+      console.error('Formulario inválido o faltan datos necesarios');
     }
   }
 

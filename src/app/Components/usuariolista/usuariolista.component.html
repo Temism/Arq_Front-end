@@ -74,19 +74,27 @@
 </div>
 
 <!-- Modal de Reserva -->
+<!-- Modal de Reserva -->
 <div
-  class="modal"
+  class="modal fade"
   [class.show]="showModal"
-  [style.display]="showModal ? 'block' : 'none'"
+  [class.d-block]="showModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="reservaModalLabel"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Reservar atención</h5>
+        <h5 class="modal-title" id="reservaModalLabel">
+          Reservar atención con {{ selectedUser?.nombre }}
+          {{ selectedUser?.apPaterno }}
+        </h5>
         <button
           type="button"
           class="btn-close"
           (click)="cerrarModal()"
+          aria-label="Close"
         ></button>
       </div>
       <div class="modal-body">
@@ -94,37 +102,73 @@
           <div class="mb-3">
             <label class="form-label">Fecha</label>
             <input type="date" class="form-control" formControlName="fecha" />
+            <div
+              *ngIf="
+                reservaForm.get('fecha')?.touched &&
+                reservaForm.get('fecha')?.invalid
+              "
+              class="text-danger small mt-1"
+            >
+              La fecha es requerida
+            </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Hora</label>
             <select class="form-control" formControlName="hora">
-              <option value="08:30">09:00</option>
+              <option value="">Seleccione una hora</option>
+              <option value="08:30">08:30</option>
               <option value="09:00">09:00</option>
               <option value="10:00">10:00</option>
               <option value="11:00">11:00</option>
               <option value="12:00">12:00</option>
-              <option value="13:00">09:00</option>
-              <option value="14:00">09:00</option>
+              <option value="14:00">14:00</option>
               <option value="15:00">15:00</option>
               <option value="16:00">16:00</option>
               <option value="17:00">17:00</option>
             </select>
+            <div
+              *ngIf="
+                reservaForm.get('hora')?.touched &&
+                reservaForm.get('hora')?.invalid
+              "
+              class="text-danger small mt-1"
+            >
+              La hora es requerida
+            </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Motivo de la consulta</label>
             <textarea
               class="form-control"
               formControlName="motivo"
               rows="3"
+              placeholder="Describe el motivo de tu reserva (mínimo 10 caracteres)"
             ></textarea>
+            <div
+              *ngIf="
+                reservaForm.get('motivo')?.touched &&
+                reservaForm.get('motivo')?.invalid
+              "
+              class="text-danger small mt-1"
+            >
+              <div *ngIf="reservaForm.get('motivo')?.errors?.['required']">
+                El motivo es requerido
+              </div>
+              <div *ngIf="reservaForm.get('motivo')?.errors?.['minlength']">
+                El motivo debe tener al menos 10 caracteres
+              </div>
+            </div>
           </div>
-          <div class="modal-footer">
+
+          <div class="modal-footer px-0 pb-0">
             <button
               type="button"
               class="btn btn-secondary"
               (click)="cerrarModal()"
             >
-              Cerrar
+              Cancelar
             </button>
             <button
               type="submit"
@@ -139,5 +183,4 @@
     </div>
   </div>
 </div>
-
 <div class="modal-backdrop fade show" *ngIf="showModal"></div>

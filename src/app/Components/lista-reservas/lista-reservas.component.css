@@ -1,0 +1,67 @@
+.reservas-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px;
+}
+
+.reserva-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  padding: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.reserva-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.reserva-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.reserva-header h3 {
+  font-size: 18px;
+  color: #333333;
+}
+
+.estado {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.estado.confirmada {
+  background-color: #e0f7e9;
+  color: #34a853;
+}
+
+.estado.pendiente {
+  background-color: #fff4e5;
+  color: #fbbc05;
+}
+
+.estado.cancelada {
+  background-color: #fbe9e7;
+  color: #ea4335;
+}
+
+.reserva-body p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #555555;
+}
+
+.reserva-body i {
+  color: #007bff;
+  margin-right: 6px;
+}

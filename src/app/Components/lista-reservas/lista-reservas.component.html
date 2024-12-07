@@ -1,0 +1,24 @@
+<div class="reservas-container">
+  <div *ngFor="let reserva of reservas" class="reserva-card">
+    <div class="reserva-header">
+      <h3>Reserva #{{ reserva.idReserva }}</h3>
+      <span class="estado {{ reserva.estadoReserva | lowercase }}">
+        {{ reserva.estadoReserva }}
+      </span>
+    </div>
+    <div class="reserva-body">
+      <p>
+        <i class="fa fa-calendar"></i> <strong>Fecha:</strong>
+        {{ reserva.fechaReserva | date : "shortDate" }}
+      </p>
+      <p>
+        <i class="fa fa-clock"></i> <strong>Hora:</strong>
+        {{ reserva.horaReserva }}
+      </p>
+      <p>
+        <i class="fa fa-info-circle"></i> <strong>Motivo:</strong>
+        {{ reserva.motivo }}
+      </p>
+    </div>
+  </div>
+</div>

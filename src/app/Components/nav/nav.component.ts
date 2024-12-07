@@ -5,8 +5,14 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+  styleUrl: './nav.component.css',
 })
 export class NavComponent {
+  constructor() {}
 
+  cerrarsesion() {
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+    console.log('cerrar sesión');
+  }
 }

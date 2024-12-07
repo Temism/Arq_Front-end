@@ -12,3 +12,7 @@
 .list-unstyled a:hover {
   color: var(--bs-primary) !important;
 }
+
+.h5 {
+  color: black;
+}
