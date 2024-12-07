@@ -224,3 +224,23 @@ body {
     }
   }
 }
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion-header {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  cursor: pointer;
+}
+
+.accordion-header.active + .accordion-content {
+  max-height: 200px;
+}
+
